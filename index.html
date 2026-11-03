@@ -174,7 +174,8 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 .fname .mini{border:none;background:none;color:#b0b0b0;font-size:.72rem;cursor:pointer;padding:0 .15rem;line-height:1;}
 .fname .mini:active{color:#555;}
 .meal-empty{font-size:.78rem;color:var(--muted);padding:.75rem 0;text-align:center;border-bottom:1px dashed #ececea;}
-.fmeta{font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.5;}
+.fmeta{font-size:.72rem;color:var(--muted);font-variant-numeric:tabular-nums;line-height:1.5;display:flex;flex-direction:column;}
+.fmeta .fm-total{color:#9c9c98;}
 .stepper{display:flex;align-items:center;gap:.15rem;flex-shrink:0;}
 .stepper button{
   width:30px;height:30px;border:1px solid var(--line);background:#fff;border-radius:8px;
@@ -1201,8 +1202,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
       '<div class="food-info"><div class="fname">' + esc(item.name) +
       '<button class="mini" data-editopen="1">改</button>' +
       '<button class="mini" data-del="1">×</button></div>' +
-      '<div class="fmeta">' + item.p + 'g 蛋白 · ' + item.k + ' kcal / ' + esc(item.unit) +
-      '　→　' + (item.p * q).toFixed(1) + 'g / ' + (item.k * q).toFixed(0) + ' kcal</div></div>' +
+      '<div class="fmeta"><span>' + item.p + 'g 蛋白 · ' + item.k + ' kcal / ' + esc(item.unit) + '</span>' +
+      '<span class="fm-total">合计 ' + (item.p * q).toFixed(1) + 'g · ' + (item.k * q).toFixed(0) + ' kcal</span></div></div>' +
       '<div class="stepper">' +
       '<button data-act="dec"' + (q <= 0 ? ' disabled' : '') + '>−</button>' +
       '<span class="qty">' + disp + '</span>' +

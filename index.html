@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#fbfbfa">
-<title>三分化训练方案</title>
+<title>训练方案</title>
 <style>
 :root{
   --bg:#fbfbfa;
@@ -115,6 +115,25 @@ ul.plain li::before{content:"—";position:absolute;left:0;color:#b5b5b5;}
 .move .meta{font-size:.8rem;color:var(--muted);line-height:1.6;margin-top:.15rem;}
 .move .meta b{color:#333;font-weight:600;}
 .rest-legend{font-size:.76rem;color:var(--muted);margin:-.2rem 0 1rem;}
+
+/* 改计划 */
+.plan-tools{display:flex;align-items:center;gap:.55rem;margin:.9rem 0 .5rem;}
+.plan-tools button{
+  border:1px solid var(--line);background:#fff;border-radius:9px;padding:.34rem .8rem;
+  font-size:.78rem;color:#444;font-family:inherit;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.plan-tools button.dark{background:var(--fill);color:#fff;border-color:var(--fill);}
+.plan-hint{font-size:.72rem;color:var(--muted);line-height:1.5;}
+.day-del{
+  float:right;margin:.15rem 0 .3rem .6rem;border:1px solid #e4cfcf;background:#fff;
+  color:#a24b4b;border-radius:8px;padding:.16rem .55rem;font-size:.72rem;font-family:inherit;cursor:pointer;
+}
+.add-day{
+  width:100%;margin:.1rem 0 .9rem;padding:.52rem;border:1px dashed #d5d5d1;background:#fff;
+  border-radius:9px;font-size:.8rem;color:#666;cursor:pointer;
+}
+.add-day:active{background:var(--soft);}
 
 /* 进阶 */
 .grade{background:var(--soft);border:1px solid var(--line);border-radius:12px;padding:1rem;margin:.8rem 0;}
@@ -230,8 +249,20 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
   -webkit-tap-highlight-color:transparent;
 }
 .f-tools .fimport:active{background:#1a1613;}
-.f-tools input{display:none;}
-.f-tools button.fimport{width:100%;font-family:inherit;background:transparent;}
+
+.f-fav{border-top:1px solid #261f1b;margin-top:.75rem;padding-top:.65rem;}
+.f-fav-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
+.f-fav-title{font-size:.72rem;color:#9a938b;letter-spacing:.04em;}
+.f-fav-open{
+  border:1px solid #3a322c;background:none;border-radius:8px;padding:.25rem .7rem;
+  font-size:.7rem;color:#d9a46e;font-family:inherit;cursor:pointer;
+}
+.f-fav input{
+  width:100%;margin-top:.45rem;padding:.42rem .55rem;border:1px solid #3a322c;border-radius:8px;
+  background:#0e0c0b;color:#ddd5cb;font-size:.72rem;font-family:inherit;
+}
+.f-fav input::placeholder{color:#6b625a;}
+.f-tools button.fimport{font-family:inherit;background:transparent;}
 .f-hint{font-size:.66rem;color:#857c72;line-height:1.6;margin-top:.1rem;}
 .f-list{max-height:190px;overflow-y:auto;border-top:1px solid #261f1b;scrollbar-width:thin;}
 .f-list::-webkit-scrollbar{width:4px;}
@@ -410,8 +441,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 <div class="container">
 
   <header class="hero">
-    <div class="tag">凯圣王 × 谭成义 · 2026 三分化</div>
-    <h1>三分化训练方案</h1>
+    <div class="tag">训练 · 饮食 · 记录</div>
+    <h1>训练方案</h1>
   </header>
 
   <div class="pager" id="pager" aria-hidden="true">
@@ -457,6 +488,11 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     <section id="training">
       <h2>训练计划</h2>
 
+      <div class="plan-tools">
+        <button id="planEditBtn">改计划</button>
+        <span class="plan-hint" id="planHint"></span>
+      </div>
+
       <div class="kv">
         <div class="item"><div class="k">Day 1</div><div class="v">胸 · 肩中束 · 三头</div></div>
         <div class="item"><div class="k">Day 2</div><div class="v">背 · 肩后束 · 二头</div></div>
@@ -465,6 +501,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
       <p class="rest-legend">组间休息：主项 2–3 分 · 复合动作 90–120 秒 · 孤立动作 30–60 秒，每个动作后面都标了。</p>
 
+      <div class="plan-days">
+
+      <div class="day-block" data-day="1">
       <h3>Day 1　胸 + 肩中束 + 三头</h3>
 
       <div class="grade">
@@ -515,6 +554,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
         </div>
       </div>
 
+      </div>
+
+      <div class="day-block" data-day="2">
       <h3>Day 2　背 + 肩后束 + 二头</h3>
 
       <div class="card">
@@ -557,6 +599,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
       <blockquote>大部分人推多拉少，胸椎容易屈曲、前侧紧张、肩关节不适。坐姿开肘划船既是拮抗肌恢复，也是肩胛后缩能力的开发。<cite>—— 谭成义</cite></blockquote>
 
+      </div>
+
+      <div class="day-block" data-day="3">
       <h3>Day 3　下肢，后侧优先</h3>
 
       <div class="card">
@@ -599,6 +644,10 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
       <blockquote>新手先别做传统硬拉。先把髋铰链、核心刚性、上背刚性建立起来，再谈大重量。<cite>—— 凯圣王</cite></blockquote>
 
+      </div>
+
+      </div><!-- /plan-days -->
+
       <h3>有氧</h3>
       <div class="card">
         <div class="move">
@@ -626,17 +675,82 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     <!-- 左页：理论与饮食 -->
     <div class="sheet page left">
 
+      <section id="diet">
+        <h2>饮食</h2>
+
+        <p class="diet-tip">每餐先点“添加食物”，填好名称、单位、每单位蛋白和热量，再用 − / + 调整份数，数据会实时重算。</p>
+
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">早餐</span><span class="meal-time">7:30–8:30</span></div>
+          <div class="meal-body" data-meal-body="0"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">午餐</span><span class="meal-time">12:00–13:00</span></div>
+          <div class="meal-body" data-meal-body="1"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">晚餐</span><span class="meal-time">18:00–19:00</span></div>
+          <div class="meal-body" data-meal-body="2"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">训练前后 / 睡前</span><span class="meal-time">按需</span></div>
+          <div class="meal-body" data-meal-body="3"></div>
+        </div>
+
+        <div class="kv">
+          <div class="item"><div class="k">每日蛋白目标</div><div class="v">110–140 g</div></div>
+          <div class="item"><div class="k">每日热量目标</div><div class="v">2200–2400 kcal</div></div>
+        </div>
+
+        <h3>基本理论</h3>
+        <div class="card">
+          <ul class="plain">
+            <li>蛋白总量：每公斤体重 1.6–2.2g。训练初期 1.8g 左右就够，超过 2.5g 没有额外增肌收益，只是多占热量。</li>
+            <li>蛋白分配：每餐 0.4g/kg 左右，一天 3–5 餐，比一顿猛吃更容易利用。</li>
+            <li>热量：比维持热量高 5–15% 的小幅盈余最适合增肌。盈余过大，脂肪增长比例会明显上升。</li>
+            <li>碳水：每公斤 3–5g，优先放在训练前 1–2 小时和训练后，其余餐次可以少一点。</li>
+            <li>脂肪：每公斤 0.8–1g，不建议低于 0.6g，优先鱼、坚果、橄榄油这类不饱和脂肪。</li>
+            <li>蛋白质量：蛋、奶、肉、鱼氨基酸谱完整；豆制品可以和谷物互补；酵母蛋白同样属于完整蛋白，乳糖不耐可以用它替代乳清。</li>
+            <li>训练后：0–2 小时内补 20–40g 蛋白加一份碳水即可，不必卡死 30 分钟。</li>
+            <li>水与纤维：每天 30–40ml/kg，训练日再加；蔬菜和全谷物保证 25–30g 膳食纤维。</li>
+            <li>优先级：总热量和蛋白总量最重要，其次是分配时机，补剂只用来补缺口。</li>
+          </ul>
+        </div>
+
+        <h3>蛋白质来源</h3>
+        <div class="card">
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡胸肉</div><div class="meta">31g 蛋白 / 100g　水煮、煎、空气炸锅</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡蛋</div><div class="meta">6g 蛋白 / 个　煮、煎、蒸，每餐都能加</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">纯牛奶</div><div class="meta">3.3g 蛋白 / 100ml　一天至少 500ml</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">瘦牛肉</div><div class="meta">26g 蛋白 / 100g　每周 2–3 次，补铁补锌</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鱼肉</div><div class="meta">18g 蛋白 / 100g　蒸或煎，脂肪质量好</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">虾</div><div class="meta">20g 蛋白 / 100g　水煮或清炒</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">豆腐</div><div class="meta">8g 蛋白 / 100g　便宜，植物蛋白补充</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">乳清蛋白粉</div><div class="meta">25g 蛋白 / 勺　训练后或早餐补缺口</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">酵母蛋白粉</div><div class="meta">24g 蛋白 / 勺　乳糖不耐时替代乳清</div></div></div>
+        </div>
+
+        <h3>补剂</h3>
+        <div class="card">
+          <div class="move"><div class="idx">1</div><div class="body"><div class="name">乳清蛋白粉 / 酵母蛋白粉</div><div class="meta">最快补上蛋白缺口　<b>每天 1–2 勺</b>，优先放在蛋白没吃够的那一餐</div></div></div>
+          <div class="move"><div class="idx">2</div><div class="body"><div class="name">肌酸一水合物</div><div class="meta">让力量和围度进步更稳　<b>每天 3–5g</b>，长期吃</div></div></div>
+          <div class="move"><div class="idx">3</div><div class="body"><div class="name">复合维生素</div><div class="meta">饮食不均衡时兜底　<b>每天 1 片</b></div></div></div>
+          <div class="move"><div class="idx">4</div><div class="body"><div class="name">维生素 D</div><div class="meta">晒太阳少时补充　<b>1000–2000 IU / 天</b></div></div></div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">增肌粉不推荐，本质是蛋白粉加糖，直接吃蛋白粉更精准。</p>
+        </div>
+      </section>
+
       <section id="principles">
         <h2>核心原则</h2>
 
         <div class="kv">
-          <div class="item"><div class="k">结构</div><div class="v">三分化</div></div>
+          <div class="item"><div class="k">结构</div><div class="v">三分化 · 可加 Day</div></div>
           <div class="item"><div class="k">周期</div><div class="v">4 周 / 循环</div></div>
           <div class="item"><div class="k">频率</div><div class="v">每周 3–4 次</div></div>
           <div class="item"><div class="k">主项</div><div class="v">杠铃卧推</div></div>
         </div>
 
-        <h3>为什么是三分化</h3>
+        <h3>为什么从三分化起步</h3>
         <p>五分化频率太慢，一次胸要歇六七天，需要单次强度非常大，一般人达不到。三分化频率高、强度适中，可以持续渐进，更适合训练初期。</p>
 
         <h3>增肌的基本理论</h3>
@@ -672,70 +786,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
         </div>
       </section>
 
-      <section id="diet">
-        <h2>饮食</h2>
 
-        <h3>基本理论</h3>
-        <div class="card">
-          <ul class="plain">
-            <li>蛋白总量：每公斤体重 1.6–2.2g。训练初期 1.8g 左右就够，超过 2.5g 没有额外增肌收益，只是多占热量。</li>
-            <li>蛋白分配：每餐 0.4g/kg 左右，一天 3–5 餐，比一顿猛吃更容易利用。</li>
-            <li>热量：比维持热量高 5–15% 的小幅盈余最适合增肌。盈余过大，脂肪增长比例会明显上升。</li>
-            <li>碳水：每公斤 3–5g，优先放在训练前 1–2 小时和训练后，其余餐次可以少一点。</li>
-            <li>脂肪：每公斤 0.8–1g，不建议低于 0.6g，优先鱼、坚果、橄榄油这类不饱和脂肪。</li>
-            <li>蛋白质量：蛋、奶、肉、鱼氨基酸谱完整；豆制品可以和谷物互补；酵母蛋白同样属于完整蛋白，乳糖不耐可以用它替代乳清。</li>
-            <li>训练后：0–2 小时内补 20–40g 蛋白加一份碳水即可，不必卡死 30 分钟。</li>
-            <li>水与纤维：每天 30–40ml/kg，训练日再加；蔬菜和全谷物保证 25–30g 膳食纤维。</li>
-            <li>优先级：总热量和蛋白总量最重要，其次是分配时机，补剂只用来补缺口。</li>
-          </ul>
-        </div>
-
-        <div class="kv">
-          <div class="item"><div class="k">每日蛋白目标</div><div class="v">110–140 g</div></div>
-          <div class="item"><div class="k">每日热量目标</div><div class="v">2200–2400 kcal</div></div>
-        </div>
-
-        <p class="diet-tip">每餐先点“添加食物”，填好名称、单位、每单位蛋白和热量，再用 − / + 调整份数，数据会实时重算。</p>
-
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">早餐</span><span class="meal-time">7:30–8:30</span></div>
-          <div class="meal-body" data-meal-body="0"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">午餐</span><span class="meal-time">12:00–13:00</span></div>
-          <div class="meal-body" data-meal-body="1"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">晚餐</span><span class="meal-time">18:00–19:00</span></div>
-          <div class="meal-body" data-meal-body="2"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">训练前后 / 睡前</span><span class="meal-time">按需</span></div>
-          <div class="meal-body" data-meal-body="3"></div>
-        </div>
-
-        <h3>蛋白质来源</h3>
-        <div class="card">
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡胸肉</div><div class="meta">31g 蛋白 / 100g　水煮、煎、空气炸锅</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡蛋</div><div class="meta">6g 蛋白 / 个　煮、煎、蒸，每餐都能加</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">纯牛奶</div><div class="meta">3.3g 蛋白 / 100ml　一天至少 500ml</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">瘦牛肉</div><div class="meta">26g 蛋白 / 100g　每周 2–3 次，补铁补锌</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鱼肉</div><div class="meta">18g 蛋白 / 100g　蒸或煎，脂肪质量好</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">虾</div><div class="meta">20g 蛋白 / 100g　水煮或清炒</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">豆腐</div><div class="meta">8g 蛋白 / 100g　便宜，植物蛋白补充</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">乳清蛋白粉</div><div class="meta">25g 蛋白 / 勺　训练后或早餐补缺口</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">酵母蛋白粉</div><div class="meta">24g 蛋白 / 勺　乳糖不耐时替代乳清</div></div></div>
-        </div>
-
-        <h3>补剂</h3>
-        <div class="card">
-          <div class="move"><div class="idx">1</div><div class="body"><div class="name">乳清蛋白粉 / 酵母蛋白粉</div><div class="meta">最快补上蛋白缺口　<b>每天 1–2 勺</b>，优先放在蛋白没吃够的那一餐</div></div></div>
-          <div class="move"><div class="idx">2</div><div class="body"><div class="name">肌酸一水合物</div><div class="meta">让力量和围度进步更稳　<b>每天 3–5g</b>，长期吃</div></div></div>
-          <div class="move"><div class="idx">3</div><div class="body"><div class="name">复合维生素</div><div class="meta">饮食不均衡时兜底　<b>每天 1 片</b></div></div></div>
-          <div class="move"><div class="idx">4</div><div class="body"><div class="name">维生素 D</div><div class="meta">晒太阳少时补充　<b>1000–2000 IU / 天</b></div></div></div>
-          <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">增肌粉不推荐，本质是蛋白粉加糖，直接吃蛋白粉更精准。</p>
-        </div>
-      </section>
 
       <section id="recovery">
         <h2>恢复</h2>
@@ -802,6 +853,16 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
         <div class="f-tools">
           <button class="fimport" id="fReload">重新载入歌单</button>
+          <button class="fimport" id="fPick">手机添加</button>
+          <input type="file" id="fFile" accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg,.aac" multiple hidden>
+        </div>
+
+        <div class="f-fav">
+          <div class="f-fav-head">
+            <span class="f-fav-title">我的收藏</span>
+            <button class="f-fav-open" id="favOpen">打开收藏</button>
+          </div>
+          <input type="url" id="favUrl" inputmode="url" placeholder="粘贴酷狗 / 网易云歌单分享链接">
         </div>
 
         <div class="f-list" id="fList"></div>
@@ -812,7 +873,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   </div>
 
   <footer>
-    <p>基于凯圣王 × 谭成义 2026 三分化逻辑整理</p>
+    <p>训练与饮食框架整理，可按自身分化调整</p>
     <p>训练中出现不适请立即停止并咨询专业人士</p>
   </footer>
 
@@ -1224,6 +1285,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   var audio = new Audio();
   audio.preload = 'metadata';
   var tracks = [];
+  var remoteTracks = [];
+  var localTracks = [];
   var cur = -1;
   var listState = 'init';
   var loopOne = false;
@@ -1438,9 +1501,10 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   }
 
   function setTracks(list, state) {
+    remoteTracks = list;
     listState = state;
     var playing = cur > -1 ? tracks[cur] : null;
-    tracks = list;
+    tracks = list.concat(localTracks);
     cur = -1;
     if (playing) {
       for (var i = 0; i < tracks.length; i++) {
@@ -1461,14 +1525,113 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     }
     renderList();
     setIcons();
-    if (state === 'empty') {
-      fHint.textContent = '歌单还是空的。电脑上打开 github.com/' + REPO + '/tree/main/music 上传 mp3，再点「重新载入歌单」。';
+    if (state === 'empty' && !tracks.length) {
+      fHint.textContent = '电脑传歌后点「重新载入歌单」；手机可直接用「手机添加」。';
     } else if (state === 'offline') {
       fHint.textContent = '暂时读不到歌单（网络或打开方式受限）。上传后请用手机打开 z77q.github.io/train-plan/ 再试。';
     } else {
-      fHint.textContent = '歌单已同步 · 共 ' + tracks.length + ' 首。电脑上传新歌后点「重新载入歌单」即可。';
+      fHint.textContent = '歌单已同步 · 共 ' + tracks.length + ' 首。电脑传歌后点「重新载入歌单」，手机也可直接用「手机添加」。';
     }
   }
+
+  /* ================= 手机添加音乐（IndexedDB 持久化） ================= */
+  var DB_NAME = 'plan_audio_v1';
+  var DB_STORE = 'files';
+
+  function idbOpen() {
+    return new Promise(function (res, rej) {
+      var req = indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = function () { req.result.createObjectStore(DB_STORE, { keyPath: 'id' }); };
+      req.onsuccess = function () { res(req.result); };
+      req.onerror = function () { rej(req.error); };
+    });
+  }
+
+  function idbAll() {
+    return idbOpen().then(function (db) {
+      return new Promise(function (res, rej) {
+        var r = db.transaction(DB_STORE, 'readonly').objectStore(DB_STORE).getAll();
+        r.onsuccess = function () { res(r.result || []); };
+        r.onerror = function () { rej(r.error); };
+      });
+    });
+  }
+
+  function idbDo(mode, fn) {
+    return idbOpen().then(function (db) {
+      return new Promise(function (res, rej) {
+        var tx = db.transaction(DB_STORE, mode);
+        fn(tx.objectStore(DB_STORE));
+        tx.oncomplete = function () { res(); };
+        tx.onerror = function () { rej(tx.error); };
+      });
+    });
+  }
+
+  function localTrack(rec) {
+    var meta = trackName(rec.name);
+    return {
+      file: 'local:' + rec.id,
+      localId: rec.id,
+      url: URL.createObjectURL(rec.blob),
+      base: '',
+      title: meta.title,
+      artist: meta.artist,
+      dur: 0,
+      lrc: null,
+      isLocal: true
+    };
+  }
+
+  idbAll().then(function (recs) {
+    localTracks = recs.sort(function (a, b) { return a.added - b.added; }).map(localTrack);
+    if (localTracks.length) setTracks(remoteTracks, listState === 'init' ? 'ok' : listState);
+  }).catch(function () {});
+
+  var fFile = document.getElementById('fFile');
+  document.getElementById('fPick').addEventListener('click', function () { fFile.click(); });
+
+  fFile.addEventListener('change', function () {
+    var files = Array.prototype.slice.call(fFile.files || []);
+    fFile.value = '';
+    if (!files.length) return;
+    var ok = files.filter(function (f) { return AUDIO_RE.test(f.name); });
+    if (!ok.length) return;
+    var chain = Promise.resolve();
+    ok.forEach(function (f, i) {
+      var rec = {
+        id: Date.now() + '-' + i + '-' + Math.random().toString(36).slice(2, 6),
+        name: f.name,
+        blob: f,
+        added: Date.now() + i
+      };
+      chain = chain.then(function () {
+        return idbDo('readwrite', function (st) { st.put(rec); }).then(function () {
+          localTracks.push(localTrack(rec));
+        });
+      });
+    });
+    chain.then(function () {
+      setTracks(remoteTracks, remoteTracks.length ? 'ok' : 'empty');
+      var idx = tracks.length - ok.length;
+      if (idx >= 0) loadTrack(idx, true);
+      if (tracks.length) fHint.textContent = '已加入 ' + ok.length + ' 首，只存在这台设备。';
+    }).catch(function () {
+      fHint.textContent = '这台设备存不下（可能是浏览器限制），可先在电脑上传。';
+    });
+  });
+
+  /* ================= 收藏跳转 ================= */
+  var FAV_KEY = 'plan_fav_url_v1';
+  var favUrl = document.getElementById('favUrl');
+  var favOpen = document.getElementById('favOpen');
+  favUrl.value = load(FAV_KEY, '');
+  favUrl.addEventListener('change', function () { save(FAV_KEY, favUrl.value.trim()); });
+  favOpen.addEventListener('click', function () {
+    var u = favUrl.value.trim();
+    if (!u) { favUrl.focus(); return; }
+    window.open(u, '_blank', 'noopener');
+  });
 
   function loadRemoteList() {
     fList.innerHTML = '<div class="f-empty">正在载入歌单…</div>';
@@ -1547,6 +1710,13 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     var del = e.target.closest('[data-del-track]');
     if (del) {
       var i = parseInt(del.getAttribute('data-del-track'), 10);
+      var tr = tracks[i];
+      if (tr && tr.isLocal) {
+        idbDo('readwrite', function (st) { st.delete(tr.localId); }).catch(function () {});
+        localTracks = localTracks.filter(function (t) { return t.localId !== tr.localId; });
+      } else if (tr) {
+        remoteTracks = remoteTracks.filter(function (t) { return t.file !== tr.file; });
+      }
       var wasCur = (i === cur);
       tracks.splice(i, 1);
       if (wasCur) {
@@ -1659,6 +1829,134 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   loadRemoteList();
   setIcons();
   updateTimes();
+
+  /* ================= 改计划 ================= */
+  var PLAN_KEY = 'plan_struct_v1';
+  (function () {
+    var planDays = document.querySelector('.plan-days');
+    var planKv = document.querySelector('#training > .kv');
+    if (!planDays || !planKv) return;
+
+    var btn = document.getElementById('planEditBtn');
+    var hint = document.getElementById('planHint');
+    var on = false;
+
+    var saved = load(PLAN_KEY, null);
+    if (saved && saved.days && saved.kv) {
+      planDays.innerHTML = saved.days;
+      planKv.innerHTML = saved.kv;
+    }
+
+    function blocks() { return planDays.querySelectorAll('.day-block'); }
+
+    function syncKv() {
+      var n = blocks().length;
+      var items = planKv.querySelectorAll('.item');
+      while (items.length > n) {
+        planKv.removeChild(items[items.length - 1]);
+        items = planKv.querySelectorAll('.item');
+      }
+      while (items.length < n) {
+        var it = document.createElement('div');
+        it.className = 'item';
+        it.innerHTML = '<div class="k"></div><div class="v">点此填写</div>';
+        planKv.appendChild(it);
+        items = planKv.querySelectorAll('.item');
+      }
+      Array.prototype.forEach.call(items, function (el, i) {
+        el.querySelector('.k').textContent = 'Day ' + (i + 1);
+      });
+    }
+
+    function renumber() {
+      Array.prototype.forEach.call(blocks(), function (b, i) {
+        b.setAttribute('data-day', i + 1);
+        var h = b.querySelector('h3');
+        if (!h) return;
+        var rest = h.textContent.replace(/^Day\s*\d+\s*(　)?/, '').trim();
+        h.textContent = 'Day ' + (i + 1) + '　' + (rest || '点此填写部位');
+      });
+      syncKv();
+    }
+
+    function saveStruct() {
+      var clone = planDays.cloneNode(true);
+      Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function (el) {
+        el.removeAttribute('contenteditable');
+      });
+      var junk = Array.prototype.slice.call(clone.querySelectorAll('.day-del, .add-day'));
+      junk.forEach(function (el) { el.parentNode.removeChild(el); });
+      try {
+        localStorage.setItem(PLAN_KEY, JSON.stringify({ days: clone.innerHTML, kv: planKv.innerHTML }));
+        localStorage.removeItem(TEXT_KEY);
+      } catch (e) {}
+    }
+
+    function paint() {
+      Array.prototype.forEach.call(blocks(), function (b) {
+        var d = b.querySelector('.day-del');
+        if (on && !d) {
+          d = document.createElement('button');
+          d.className = 'day-del';
+          d.type = 'button';
+          d.textContent = '删除这天';
+          b.insertBefore(d, b.firstChild);
+        } else if (!on && d) {
+          d.parentNode.removeChild(d);
+        }
+      });
+      var add = planDays.querySelector('.add-day');
+      if (on && !add) {
+        add = document.createElement('button');
+        add.className = 'add-day';
+        add.type = 'button';
+        add.textContent = '+ 加一天';
+        planDays.appendChild(add);
+      } else if (!on && add) {
+        add.parentNode.removeChild(add);
+      }
+      btn.textContent = on ? '完成' : '改计划';
+      btn.classList.toggle('dark', on);
+      hint.textContent = on ? '可删任意一天；新增的天是空白模板，点字改成动作、组次。' : '';
+    }
+
+    btn.addEventListener('click', function () {
+      on = !on;
+      paint();
+      if (on) collectEditables();
+    });
+
+    planDays.addEventListener('click', function (e) {
+      var del = e.target.closest('.day-del');
+      if (del) {
+        var b = del.closest('.day-block');
+        if (b && blocks().length > 1) {
+          b.parentNode.removeChild(b);
+          renumber();
+          paint();
+          saveStruct();
+        }
+        return;
+      }
+      if (e.target.closest('.add-day')) {
+        var n = blocks().length;
+        var tpl = document.createElement('div');
+        tpl.className = 'day-block';
+        tpl.setAttribute('data-day', n + 1);
+        var moves = '';
+        for (var k = 1; k <= 5; k++) {
+          moves += '<div class="move"><div class="idx">0' + k + '</div><div class="body">' +
+            '<div class="name">动作' + k + '<span class="rest">休 90 秒</span></div>' +
+            '<div class="meta"><b>3×10</b>　点此改成你的动作和组次</div></div></div>';
+        }
+        tpl.innerHTML = '<h3>Day ' + (n + 1) + '　点此填写部位</h3><div class="card">' + moves + '</div>';
+        planDays.appendChild(tpl);
+        renumber();
+        paint();
+        saveStruct();
+      }
+    });
+  })();
 
   /* ================= 手机翻页 ================= */
   var book = document.getElementById('book');

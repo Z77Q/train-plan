@@ -789,7 +789,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
         <div class="f-times"><span id="fCur">0:00</span><span id="fDur">0:00</span></div>
 
         <div class="f-ctrl">
-          <button id="fLoop" aria-label="单曲循环">↻</button>
+          <button id="fLoop" aria-label="单曲循环">循环</button>
           <button id="fPrev" aria-label="上一首">«</button>
           <button id="fPlay" class="f-play" aria-label="播放">▶</button>
           <button id="fNext" aria-label="下一首">»</button>
@@ -818,7 +818,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 <div class="dock" id="dock">
   <button class="dock-head" id="dockToggle" aria-expanded="false">
     <div class="dock-stats">蛋白 <b id="pV">0.0</b> g　·　热量 <b id="kV">0</b> kcal</div>
-    <span class="chev" id="chev">⌄</span>
+    <span class="chev" id="chev">▾</span>
   </button>
   <div class="dock-body">
     <div class="dock-row">
@@ -849,7 +849,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     <div class="s-bar" id="sBar"><div class="s-fill" id="sFill"></div></div>
     <div class="s-times"><span id="sCur">0:00</span><span id="sDur">0:00</span></div>
     <div class="s-ctrl">
-      <button id="sLoop" aria-label="单曲循环">↻</button>
+      <button id="sLoop" aria-label="单曲循环">循环</button>
       <button id="sPrev" aria-label="上一首">«</button>
       <button id="sPlay" class="s-play" aria-label="播放">▶</button>
       <button id="sNext" aria-label="下一首">»</button>
@@ -1738,7 +1738,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   function syncDock() {
     var open = dock.classList.contains('open');
     document.body.classList.toggle('dock-collapsed', !open);
-    chev.textContent = open ? '⌃' : '⌄';
+    chev.textContent = open ? '▴' : '▾';
     dockToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 

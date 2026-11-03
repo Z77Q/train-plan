@@ -34,19 +34,8 @@ body.stage-open{overflow:hidden;}
 .hero .tag{font-size:.72rem;letter-spacing:.14em;color:var(--muted);margin-bottom:.8rem;}
 .hero h1{font-size:clamp(1.6rem,6vw,2.2rem);font-weight:600;letter-spacing:.02em;line-height:1.3;}
 
-/* 导航 */
-.nav{
-  position:sticky;top:0;z-index:50;display:flex;gap:.4rem;overflow-x:auto;
-  background:rgba(251,251,250,.94);backdrop-filter:blur(8px);
-  padding:.65rem 0;margin-bottom:1.4rem;border-bottom:1px solid var(--line);
-  scrollbar-width:none;
-}
-.nav::-webkit-scrollbar{display:none;}
-.nav a{
-  flex-shrink:0;padding:.42rem .9rem;border:1px solid var(--line);border-radius:999px;
-  background:#fff;color:var(--ink);text-decoration:none;font-size:.82rem;
-}
-.nav a:active{background:var(--soft);}
+/* 分页指示（仅手机） */
+.pager{display:none;}
 
 /* 第一页 */
 .page-one{max-width:820px;margin:0 auto;}
@@ -140,12 +129,14 @@ ul.plain li::before{content:"—";position:absolute;left:0;color:#b5b5b5;}
 blockquote{border-left:2px solid #c9c9c5;padding:.2rem 0 .2rem .8rem;margin:.8rem 0;font-size:.85rem;color:#555;}
 blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:normal;margin-top:.2rem;}
 
-/* 跨页 */
-.spread{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:1.2rem;align-items:start;margin-top:.4rem;}
+/* 跨页 / 分页 */
+.book{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:1.2rem;align-items:start;margin-top:.4rem;}
+.sheet-a{grid-column:1/-1;min-width:0;}
 .page{border-radius:18px;min-width:0;}
-.page.left{background:var(--panel);border:1px solid var(--line);padding:1.3rem 1.15rem .6rem;}
+.page.left{grid-column:1;background:var(--panel);border:1px solid var(--line);padding:1.3rem 1.15rem .6rem;}
 .page.left section:last-of-type{margin-bottom:1.4rem;}
 .page.right{
+  grid-column:2;align-self:start;
   background:var(--dark);color:var(--dark-ink);border:1px solid #241f1c;
   padding:1.1rem 1rem 1.1rem;position:sticky;top:4.4rem;
 }
@@ -240,6 +231,7 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 }
 .f-tools .fimport:active{background:#1a1613;}
 .f-tools input{display:none;}
+.f-tools button.fimport{width:100%;font-family:inherit;background:transparent;}
 .f-hint{font-size:.66rem;color:#857c72;line-height:1.6;margin-top:.1rem;}
 .f-list{max-height:190px;overflow-y:auto;border-top:1px solid #261f1b;scrollbar-width:thin;}
 .f-list::-webkit-scrollbar{width:4px;}
@@ -361,15 +353,41 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;font-size:.75rem;color:var(--muted);text-align:center;}
 
 @media (max-width:900px){
-  .spread{grid-template-columns:1fr;}
-  .page.right{position:static;order:-1;}
-  .page.left{padding:1.1rem .9rem .4rem;}
+  body{overflow:hidden;height:100svh;}
+  .container{max-width:none;padding:.7rem .7rem 0;height:100svh;display:flex;flex-direction:column;}
+  .hero{padding:.9rem 0 .8rem;flex-shrink:0;}
+  .hero .tag{margin-bottom:.45rem;}
+  .hero h1{font-size:1.45rem;}
+  .pager{
+    display:flex;align-items:center;justify-content:center;gap:.4rem;flex-shrink:0;
+    padding:.1rem 0 .55rem;
+  }
+  .pager i{
+    width:6px;height:6px;border-radius:999px;background:#cfcfca;
+    transition:background .2s ease,transform .2s ease;
+  }
+  .pager i.on{background:var(--fill);transform:scale(1.35);}
+  .pager span{font-size:.66rem;color:var(--muted);margin-left:.25rem;letter-spacing:.04em;}
+
+  .book{
+    display:flex;flex:1;min-height:0;gap:0;margin-top:0;
+    overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;
+    border-radius:16px;scrollbar-width:none;-webkit-overflow-scrolling:touch;
+  }
+  .book::-webkit-scrollbar{display:none;}
+  .sheet{flex:0 0 100%;min-width:0;scroll-snap-align:start;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+  .sheet-a{padding:0 .1rem 4.8rem;}
+  .page.left{grid-column:auto;padding:1.1rem .9rem 4.8rem;border-radius:16px;}
+  .page.left section:last-of-type{margin-bottom:1.4rem;}
+  .page.right{grid-column:auto;position:static;align-self:stretch;padding:1.1rem .9rem 4.8rem;border-radius:16px;}
+  footer{display:none;}
 }
 @media (max-width:480px){
-  .container{padding:1rem .8rem 9rem;}
+  .container{padding:.5rem .55rem 0;}
   body{font-size:15px;}
+  .hero{padding:.7rem 0 .6rem;}
+  .hero h1{font-size:1.35rem;}
   .add-form .row{grid-template-columns:1fr 1fr;}
-  body.dock-collapsed .container{padding-bottom:4.2rem;}
   .f-top{gap:.65rem;}
   .cover{width:76px;height:76px;}
   .t-clock{font-size:1.35rem;}
@@ -377,7 +395,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   .ly.active{font-size:1.35rem;}
 }
 @media print{
-  .dock,.nav,.stage{display:none;}
+  .dock,.pager,.stage{display:none;}
   .container{padding-bottom:0;}
   .page.right{display:none;}
 }
@@ -392,16 +410,14 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     <h1>三分化训练方案</h1>
   </header>
 
-  <nav class="nav">
-    <a href="#checkin">签到</a>
-    <a href="#training">训练</a>
-    <a href="#principles">理论</a>
-    <a href="#diet">饮食</a>
-    <a href="#music">音乐</a>
-  </nav>
+  <div class="pager" id="pager" aria-hidden="true">
+    <i class="on"></i><i></i><i></i><span>左右滑动翻页</span>
+  </div>
 
-  <!-- ================= 第一页：签到 + 训练 ================= -->
-  <div class="page-one">
+  <div class="book" id="book">
+
+  <!-- ================= 第 1 页：签到 + 训练 ================= -->
+    <div class="sheet sheet-a">
 
     <section class="checkin" id="checkin">
       <div class="cal-head">
@@ -601,11 +617,10 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
   </div>
 
-  <!-- ================= 跨页 ================= -->
-  <div class="spread">
+  <!-- ================= 第 2 / 3 页：原理饮食 · 音乐 ================= -->
 
     <!-- 左页：理论与饮食 -->
-    <div class="page left">
+    <div class="sheet page left">
 
       <section id="principles">
         <h2>核心原则</h2>
@@ -619,6 +634,26 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
         <h3>为什么是三分化</h3>
         <p>五分化频率太慢，一次胸要歇六七天，需要单次强度非常大，一般人达不到。三分化频率高、强度适中，可以持续渐进，更适合训练初期。</p>
+
+        <h3>增肌的基本理论</h3>
+        <div class="card">
+          <p><strong>肌肉生长的两个条件：机械张力 + 足够原料。</strong>训练给肌肉一个“需要变强”的信号，吃和睡提供修复所需的原料和激素环境，缺一样都长不快。</p>
+          <p><strong>渐进超负荷是唯一主线。</strong>重量、次数、组数、控制时间，任意一项比上次多一点，都算进步。计划表只是模板，真正起作用的是每一次都比上一次多一点。</p>
+          <p><strong>容量要够，但不必堆到力竭。</strong>每个肌群每周 10–20 组有效组，分散到 2 次以上，比一次练到瘫更划算。大重量复合动作留 1–2 次余量，孤立动作可以做到接近力竭。</p>
+          <p><strong>热量小幅盈余。</strong>比维持热量高 5–15%，体重每周涨 0.25–0.5% 左右。涨得太快基本都是脂肪，涨不动就是吃少了。</p>
+          <p><strong>蛋白每天 1.6–2.2g/kg，分 3–5 餐。</strong>碳水每公斤 3–5g 保证训练强度，脂肪不低于 0.6g/kg。</p>
+          <p><strong>新手可以“增肌减脂同时发生”。</strong>训练初期、体脂偏高、蛋白吃够的人，体重不变也可能围度变大、线条变清晰，前 3–6 个月不必急着分阶段。</p>
+        </div>
+
+        <h3>减脂的基本理论</h3>
+        <div class="card">
+          <p><strong>减脂只看热量缺口。</strong>每天比总消耗少 10–20%，体重每周降 0.5–1% 最稳。缺口太大，掉的是肌肉和训练状态，不是更多的脂肪。</p>
+          <p><strong>蛋白反而要更高。</strong>减脂期每公斤 1.8–2.2g，配合力量训练，尽量保住已有的肌肉。</p>
+          <p><strong>力量训练不能停。</strong>减脂期肌肉能不能保住，主要看有没有持续给肌肉刺激。只做有氧，体重会掉，但围度和力量一起掉。</p>
+          <p><strong>有氧是加速器，不是主力。</strong>每天 6000–10000 步打底，再加每周 150–200 分钟低强度有氧，比一次练到虚脱更容易坚持，也不影响恢复。</p>
+          <p><strong>体重会波动，看周平均。</strong>水分、糖原、盐分都会让体重一天差 1–2kg，用每周平均值判断趋势，别被单日数字影响情绪。</p>
+          <p><strong>平台期先查三件事：</strong>热量有没有被低估、活动量是不是掉了、睡眠和压力是否变差。三者都正常，再把热量缺口往下调 5% 或增加有氧。</p>
+        </div>
 
         <h3>力竭怎么用</h3>
         <div class="card">
@@ -734,8 +769,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
     </div>
 
-    <!-- 右页：本地音乐 -->
-    <section class="page right" id="music">
+    <!-- 右页：云端歌单 -->
+    <section class="sheet page right" id="music">
       <h2>音乐</h2>
 
       <div class="folia" id="folia" style="--h1:28;--h2:208;">
@@ -745,8 +780,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
           </div>
           <div class="f-info">
             <div class="f-title" id="fTitle">未选择歌曲</div>
-            <div class="f-artist" id="fArtist">导入本地音乐开始</div>
-            <div class="f-state" id="fState">本地播放</div>
+            <div class="f-artist" id="fArtist">等待载入歌单</div>
+            <div class="f-state" id="fState">云端歌单</div>
           </div>
         </div>
 
@@ -755,19 +790,18 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
         <div class="f-ctrl">
           <button id="fLoop" aria-label="单曲循环">↻</button>
-          <button id="fPrev" aria-label="上一首">⏮</button>
+          <button id="fPrev" aria-label="上一首">«</button>
           <button id="fPlay" class="f-play" aria-label="播放">▶</button>
-          <button id="fNext" aria-label="下一首">⏭</button>
+          <button id="fNext" aria-label="下一首">»</button>
           <button id="fLyricBtn" aria-label="歌词">词</button>
         </div>
 
         <div class="f-tools">
-          <label class="fimport">＋ 导入音乐<input type="file" id="fileInput" accept="audio/*" multiple></label>
-          <label class="fimport">＋ 载入 .lrc<input type="file" id="lrcInput" accept=".lrc,text/plain"></label>
+          <button class="fimport" id="fReload">重新载入歌单</button>
         </div>
 
         <div class="f-list" id="fList"></div>
-        <div class="f-hint">本地文件不会上传；刷新页面后需要重新导入。</div>
+        <div class="f-hint" id="fHint">在电脑上打开 github.com/Z77Q/train-plan/tree/main/music，把 mp3 传进去，手机刷新即自动出现；同名 .lrc 会一起载入。</div>
       </div>
     </section>
 
@@ -816,9 +850,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     <div class="s-times"><span id="sCur">0:00</span><span id="sDur">0:00</span></div>
     <div class="s-ctrl">
       <button id="sLoop" aria-label="单曲循环">↻</button>
-      <button id="sPrev" aria-label="上一首">⏮</button>
+      <button id="sPrev" aria-label="上一首">«</button>
       <button id="sPlay" class="s-play" aria-label="播放">▶</button>
-      <button id="sNext" aria-label="下一首">⏭</button>
+      <button id="sNext" aria-label="下一首">»</button>
     </div>
   </div>
 </div>
@@ -1187,6 +1221,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   audio.preload = 'metadata';
   var tracks = [];
   var cur = -1;
+  var listState = 'init';
   var loopOne = false;
   var lyricLines = [];
   var activeLine = -1;
@@ -1209,6 +1244,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   var sBar = document.getElementById('sBar');
   var fBar = document.getElementById('fBar');
   var fList = document.getElementById('fList');
+  var fHint = document.getElementById('fHint');
   var cover = document.getElementById('cover');
   var folia = document.getElementById('folia');
 
@@ -1246,7 +1282,8 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
   function renderList() {
     if (!tracks.length) {
-      fList.innerHTML = '<div class="f-empty">还没有音乐，点上面导入</div>';
+      fList.innerHTML = '<div class="f-empty">' +
+        (listState === 'offline' ? '连接不到歌单' : '歌单为空，电脑上传后自动同步') + '</div>';
       return;
     }
     var html = '';
@@ -1264,7 +1301,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     var playing = !audio.paused && !!audio.src;
     fPlay.textContent = playing ? 'Ⅱ' : '▶';
     sPlay.textContent = playing ? 'Ⅱ' : '▶';
-    fState.textContent = playing ? '正在播放' : (tracks.length ? '已暂停' : '本地播放');
+    fState.textContent = playing ? '正在播放' : (tracks.length ? '已暂停' : '云端歌单');
   }
 
   function updateTimes() {
@@ -1338,9 +1375,27 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     renderLyrics();
     updateTimes();
     setIcons();
+    if (!t.lrc && t.base) fetchLrc(t);
     if (autoplay) {
       audio.play().catch(function () {});
     }
+  }
+
+  function fetchLrc(t) {
+    if (t.lrcAsked) return;
+    t.lrcAsked = true;
+    fetch(t.base + '.lrc', { cache: 'no-store' })
+      .then(function (r) { return r.ok ? r.text() : ''; })
+      .then(function (txt) {
+        var lines = parseLrc(txt || '');
+        if (!lines.length) return;
+        t.lrc = lines;
+        if (tracks[cur] === t) {
+          renderLyrics();
+          fState.textContent = '歌词 ' + lines.length + ' 行';
+        }
+      })
+      .catch(function () {});
   }
 
   function togglePlay() {
@@ -1359,46 +1414,93 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     loadTrack((cur - 1 + tracks.length) % tracks.length, true);
   }
 
-  document.getElementById('fileInput').addEventListener('change', function () {
-    var files = this.files;
-    if (!files || !files.length) return;
-    Array.prototype.forEach.call(files, function (file) {
-      var url = URL.createObjectURL(file);
-      var meta = trackName(file.name);
-      var tr = { id: 't' + Date.now() + Math.random().toString(36).slice(2, 6), url: url, title: meta.title, artist: meta.artist, dur: 0, lrc: null, file: file.name };
-      tracks.push(tr);
-      var probe = new Audio();
-      probe.preload = 'metadata';
-      probe.src = url;
-      probe.addEventListener('loadedmetadata', function () {
-        tr.dur = probe.duration || 0;
-        renderList();
-        if (cur === tracks.indexOf(tr)) updateTimes();
-      });
-    });
-    this.value = '';
-    renderList();
-    if (cur < 0) loadTrack(0, false);
-  });
+  /* 歌单来自仓库 music/ 目录：电脑上传，手机直接播放 */
+  var REPO = 'Z77Q/train-plan';
+  var AUDIO_RE = /\.(mp3|m4a|aac|ogg|opus|wav|flac|webm)$/i;
 
-  document.getElementById('lrcInput').addEventListener('change', function () {
-    var file = this.files && this.files[0];
-    this.value = '';
-    if (!file) return;
-    if (cur < 0) { alert('先选一首歌，再载入歌词'); return; }
-    var target = tracks[cur];
-    var reader = new FileReader();
-    reader.onload = function () {
-      target.lrc = parseLrc(String(reader.result || ''));
-      if (target.lrc.length) {
-        fState.textContent = '歌词 ' + target.lrc.length + ' 行';
-        renderLyrics();
-      } else {
-        alert('没有识别到时间轴，请确认是 .lrc 文件');
-      }
+  function fileToTrack(name) {
+    var meta = trackName(name);
+    var base = name.replace(AUDIO_RE, '');
+    return {
+      id: 'r-' + name,
+      url: 'music/' + encodeURIComponent(name),
+      base: 'music/' + encodeURIComponent(base),
+      title: meta.title,
+      artist: meta.artist,
+      dur: 0,
+      lrc: null,
+      file: name
     };
-    reader.readAsText(file, 'utf-8');
-  });
+  }
+
+  function setTracks(list, state) {
+    listState = state;
+    var playing = cur > -1 ? tracks[cur] : null;
+    tracks = list;
+    cur = -1;
+    if (playing) {
+      for (var i = 0; i < tracks.length; i++) {
+        if (tracks[i].file === playing.file) {
+          cur = i;
+          audio.src = tracks[i].url;
+          break;
+        }
+      }
+    }
+    if (cur < 0 && !audio.paused) audio.pause();
+    if (cur > -1) {
+      fTitle.textContent = tracks[cur].title;
+      fArtist.textContent = tracks[cur].artist;
+      sTitle.textContent = tracks[cur].title;
+      sArtist.textContent = tracks[cur].artist;
+      renderLyrics();
+    }
+    renderList();
+    setIcons();
+    if (state === 'empty') {
+      fHint.textContent = '歌单还是空的。电脑上打开 github.com/' + REPO + '/tree/main/music 上传 mp3，再点「重新载入歌单」。';
+    } else if (state === 'offline') {
+      fHint.textContent = '暂时读不到歌单（网络或打开方式受限）。上传后请用手机打开 z77q.github.io/train-plan/ 再试。';
+    } else {
+      fHint.textContent = '歌单已同步 · 共 ' + tracks.length + ' 首。电脑上传新歌后点「重新载入歌单」即可。';
+    }
+  }
+
+  function loadRemoteList() {
+    fList.innerHTML = '<div class="f-empty">正在载入歌单…</div>';
+    fetch('https://api.github.com/repos/' + REPO + '/contents/music?ref=main', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('api ' + r.status);
+        return r.json();
+      })
+      .then(function (arr) {
+        var files = (arr || []).filter(function (x) {
+          return x.type === 'file' && AUDIO_RE.test(x.name);
+        }).map(function (x) { return x.name; });
+        files.sort(function (a, b) { return a.localeCompare(b, 'zh'); });
+        if (!files.length) { setTracks([], 'empty'); return; }
+        setTracks(files.map(fileToTrack), 'ok');
+      })
+      .catch(loadManifest);
+  }
+
+  function loadManifest() {
+    fetch('music/playlist.json', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('404');
+        return r.json();
+      })
+      .then(function (arr) {
+        var files = (arr || []).map(function (x) {
+          return typeof x === 'string' ? x : x.file;
+        }).filter(Boolean).filter(function (n) { return AUDIO_RE.test(n); });
+        if (!files.length) { setTracks([], 'empty'); return; }
+        setTracks(files.map(fileToTrack), 'ok');
+      })
+      .catch(function () { setTracks([], 'offline'); });
+  }
+
+  document.getElementById('fReload').addEventListener('click', loadRemoteList);
 
   function parseLrc(text) {
     var out = [];
@@ -1424,7 +1526,6 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
     if (del) {
       var i = parseInt(del.getAttribute('data-del-track'), 10);
       var wasCur = (i === cur);
-      URL.revokeObjectURL(tracks[i].url);
       tracks.splice(i, 1);
       if (wasCur) {
         audio.pause();
@@ -1528,12 +1629,39 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   });
 
   window.addEventListener('beforeunload', function () {
-    tracks.forEach(function (t) { URL.revokeObjectURL(t.url); });
+    tracks.forEach(function (t) {
+      if (t.url && t.url.indexOf('blob:') === 0) URL.revokeObjectURL(t.url);
+    });
   });
 
-  renderList();
+  loadRemoteList();
   setIcons();
   updateTimes();
+
+  /* ================= 手机翻页 ================= */
+  var book = document.getElementById('book');
+  var pager = document.getElementById('pager');
+  var pageDots = pager ? pager.querySelectorAll('i') : [];
+
+  function syncPage() {
+    if (!book) return;
+    var w = book.clientWidth || 1;
+    var idx = Math.round(book.scrollLeft / w);
+    if (idx < 0) idx = 0;
+    if (idx > pageDots.length - 1) idx = pageDots.length - 1;
+    Array.prototype.forEach.call(pageDots, function (d, i) {
+      d.classList.toggle('on', i === idx);
+    });
+  }
+
+  if (book) {
+    var raf = null;
+    book.addEventListener('scroll', function () {
+      if (raf) return;
+      raf = window.requestAnimationFrame(function () { raf = null; syncPage(); });
+    }, { passive: true });
+    window.addEventListener('resize', syncPage);
+  }
 
   /* ================= 文字编辑 ================= */
   var TEXT_KEY = 'plan_text_v3';

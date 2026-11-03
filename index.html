@@ -1481,6 +1481,23 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
         if (!files.length) { setTracks([], 'empty'); return; }
         setTracks(files.map(fileToTrack), 'ok');
       })
+      .catch(loadJsDelivr);
+  }
+
+  function loadJsDelivr() {
+    fetch('https://data.jsdelivr.com/v1/packages/gh/' + REPO + '@main?structure=flat', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('jsdelivr ' + r.status);
+        return r.json();
+      })
+      .then(function (data) {
+        var files = (data.files || []).map(function (f) { return f.name; })
+          .filter(function (n) { return n.indexOf('/music/') === 0; })
+          .map(function (n) { return n.slice(7); });
+        files.sort(function (a, b) { return a.localeCompare(b, 'zh'); });
+        if (!files.length) { setTracks([], 'empty'); return; }
+        setTracks(files.map(fileToTrack), 'ok');
+      })
       .catch(loadManifest);
   }
 

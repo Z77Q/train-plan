@@ -327,6 +327,41 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 body.editing-on .del-x{display:flex;}
 body.editing-on [data-delcard]{position:relative;}
 
+/* 肌肉示意图组件 */
+.mu-wrap{margin:.5rem 0 .1rem;padding-left:1.6rem;}
+.mu-toggle{
+  border:1px solid var(--line);background:#fff;border-radius:8px;
+  padding:.28rem .6rem;font-size:.72rem;color:#666;font-family:inherit;cursor:pointer;
+  -webkit-tap-highlight-color:transparent;
+}
+.mu-toggle.open{background:var(--soft);color:var(--ink);}
+.mu-panel{border:1px solid var(--line);border-radius:12px;background:var(--panel);padding:.7rem .65rem .6rem;margin-top:.4rem;}
+.mu-head{display:flex;justify-content:space-between;align-items:center;gap:.5rem;}
+.mu-name{font-size:.78rem;font-weight:600;color:#333;}
+.mu-tabs{display:flex;gap:.25rem;}
+.mu-tabs button{
+  border:1px solid var(--line);background:#fff;border-radius:6px;padding:.18rem .5rem;
+  font-size:.7rem;color:#555;font-family:inherit;cursor:pointer;
+}
+.mu-tabs button.on{background:var(--fill);color:#fff;border-color:var(--fill);}
+.mu-stage{display:flex;justify-content:center;margin:.35rem 0 .2rem;}
+.mu-svg{width:auto;max-width:100%;max-height:380px;height:auto;display:block;}
+.mu-svg .skin{fill:#f8f8f5;stroke:#dcdcd7;stroke-width:.8;}
+.mu-svg g[data-m]{cursor:pointer;}
+.mu-svg g[data-m] path{fill:#dededa;stroke:#fff;stroke-width:.9;transition:fill .15s;}
+.mu-svg g[data-m].pri path{fill:#171717;}
+.mu-svg g[data-m].sec path{fill:#a3a39d;}
+.mu-svg g[data-m].sel path{stroke:#171717;stroke-width:1.5;stroke-dasharray:3 2;}
+.mu-svg g[data-view][hidden]{display:none;}
+.mu-legend{display:flex;justify-content:center;gap:.7rem;font-size:.66rem;color:var(--muted);margin:.15rem 0 .45rem;}
+.mu-legend i{display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:.2rem;vertical-align:1px;border:1px solid #e2e2de;}
+.mu-legend .lg-pri{background:#171717;border-color:#171717;}
+.mu-legend .lg-sec{background:#9d9d98;border-color:#9d9d98;}
+.mu-legend .lg-off{background:#e8e8e5;}
+.mu-info{font-size:.74rem;line-height:1.6;color:#555;background:var(--soft);border-radius:8px;padding:.5rem .6rem;}
+.mu-info b{color:var(--ink);font-weight:600;}
+.mu-info .mu-empty{color:var(--muted);}
+
 /* 全屏舞台 */
 .stage{
   position:fixed;inset:0;z-index:900;display:none;flex-direction:column;
@@ -1197,7 +1232,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
       Array.prototype.forEach.call(clone.querySelectorAll('[contenteditable]'), function (el) {
         el.removeAttribute('contenteditable');
       });
-      var junk = Array.prototype.slice.call(clone.querySelectorAll('.day-del, .add-day'));
+      var junk = Array.prototype.slice.call(clone.querySelectorAll('.day-del, .add-day, .mu-wrap'));
       junk.forEach(function (el) { el.parentNode.removeChild(el); });
       try {
         localStorage.setItem(PLAN_KEY, JSON.stringify({ days: clone.innerHTML, kv: planKv.innerHTML }));
@@ -1439,6 +1474,215 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   syncDock();
 
   window.addEventListener('beforeunload', function () { if (editing) saveText(); });
+
+  /* ================= 动作肌群示意图 ================= */
+  var MUS = {
+    chest:    { name: '胸大肌',     view: 'front', d: 'M64,66 L99,72 L99,130 L80,134 L62,104 Z',
+                desc: '水平推类的主要发力肌，负责肩关节内收。' },
+    front_delt:{ name:'三角肌前束',  view: 'front', d: 'M56,70 L78,78 L78,96 L62,98 L50,86 Z',
+                desc: '肩前侧，卧推、前平举时参与。' },
+    side_delt:{ name:'三角肌中束',   view: 'front', d: 'M48,88 L61,92 L59,110 L49,104 Z',
+                desc: '肩外侧，侧平举主角，决定肩宽。' },
+    biceps:   { name:'肱二头肌',    view: 'front', d: 'M50,106 L73,112 L69,168 L49,164 Z',
+                desc: '屈肘主力，弯举与所有拉类的辅助。' },
+    forearms: { name:'前臂肌群',    view: 'front', d: 'M45,172 L66,176 L57,250 L37,244 Z',
+                desc: '握力来源，硬拉、划船的持续限制因素。' },
+    abs:      { name:'腹直肌',      view: 'front', center:true, d: 'M88,134 L112,134 L112,198 L88,198 Z',
+                desc: '躯干屈曲与抗伸展，大重量动作的稳定基础。' },
+    obliques:{ name:'腹斜肌',      view: 'front', d: 'M72,134 L88,136 L88,198 L75,196 Z',
+                desc: '旋转与侧屈，深蹲、硬拉时维持躯干刚性。' },
+    quads:    { name:'股四头肌',    view: 'front', d: 'M71,226 L97,228 L91,316 L67,314 Z',
+                desc: '伸膝主力，所有蹲类的核心。' },
+    adductors:{ name:'内收肌群',    view: 'front', d: 'M92,232 L100,232 L98,272 L92,272 Z',
+                desc: '髋内收，深蹲底部稳定膝盖方向。' },
+    calves:   { name:'小腿三头肌',  view: 'front', d: 'M72,322 L92,322 L88,396 L71,394 Z',
+                desc: '踝跖屈，蹲、硬拉与跑跳的稳定环节。' },
+    traps:    { name:'斜方肌',      view: 'back', center:true, d: 'M100,62 C116,62 128,72 136,84 L120,94 C110,86 100,84 C90,86 80,94 L64,84 C72,72 84,62 Z',
+                desc: '上束提肩，中下束负责肩胛后缩与下沉。' },
+    rear_delt:{ name:'三角肌后束',  view: 'back', d: 'M56,70 L78,78 L78,96 L62,98 L50,86 Z',
+                desc: '肩后侧，开肘划船、面拉的主要目标。' },
+    lats:     { name:'背阔肌',      view: 'back', d: 'M71,98 L98,104 L96,152 L71,148 Z',
+                desc: '肩伸与内收，下拉、划船的主动肌。' },
+    erectors: { name:'竖脊肌',      view: 'back', center:true, d: 'M94,96 L106,96 L106,192 L94,192 Z',
+                desc: '脊柱伸展，硬拉、山羊挺身的主要工作肌。' },
+    glutes:   { name:'臀大肌',      view: 'back', d: 'M80,190 L100,192 L100,228 L80,224 Z',
+                desc: '髋伸主力，蹲与硬拉的顶端发力。' },
+    hams:     { name:'腘绳肌',      view: 'back', d: 'M72,226 L96,228 L90,316 L66,314 Z',
+                desc: '屈膝 + 髋伸，硬拉的离心段最吃它。' },
+    tri:      { name:'肱三头肌',    view: 'back', d: 'M50,106 L73,112 L69,168 L49,164 Z',
+                desc: '伸肘主力，推类与臂屈伸的主要发力肌。' }
+  };
+
+  var MAP = {
+    '杠铃卧推':       { p: ['chest'], s: ['front_delt','tri'] },
+    '哑铃上斜卧推':   { p: ['chest'], s: ['front_delt','tri'] },
+    '双杠臂屈伸':     { p: ['chest','tri'], s: ['front_delt'] },
+    '仰卧杠铃臂屈伸': { p: ['tri'], s: [] },
+    'Y 字侧平举':     { p: ['side_delt'], s: ['traps'] },
+    '单手器械划船':   { p: ['lats'], s: ['biceps','rear_delt','traps'] },
+    '单臂钢线下拉':   { p: ['lats'], s: ['biceps','rear_delt'] },
+    '对握下拉':       { p: ['lats'], s: ['biceps','traps'] },
+    '坐姿划船开肘':   { p: ['rear_delt'], s: ['traps','lats'] },
+    '颈前深蹲':       { p: ['quads'], s: ['glutes','abs'] },
+    '保加利亚分腿蹲': { p: ['quads','glutes'], s: ['hams','abs'] },
+    '罗马尼亚硬拉':   { p: ['hams','glutes'], s: ['erectors','forearms'] },
+    '单腿硬拉':       { p: ['hams','glutes'], s: ['erectors','forearms'] },
+    '山羊挺身':       { p: ['erectors'], s: ['glutes','hams'] },
+    '钢线弯举':       { p: ['biceps'], s: ['forearms'] }
+  };
+
+  var BODY = '<ellipse class="skin" cx="100" cy="28" rx="14" ry="18"/>' +
+    '<path class="skin" d="M94,44 L106,44 L107,58 L93,58 Z"/>' +
+    '<path class="skin" d="M64,82 C64,62 82,56 100,56 C118,56 136,62 136,82 C136,104 126,126 122,156 C120,182 124,206 118,222 L100,236 L82,222 C76,206 80,182 78,156 C74,126 64,104 64,82 Z"/>' +
+    '<path class="skin" d="M64,80 C54,88 52,104 51,124 C50,150 48,180 44,210 L38,252 L52,256 L58,214 C62,184 64,158 65,132 C66,110 68,96 74,88 Z"/>' +
+    '<path class="skin" d="M136,80 C146,88 148,104 149,124 C150,150 152,180 156,210 L162,252 L148,256 L142,214 C138,184 136,158 135,132 C134,110 132,96 126,88 Z"/>' +
+    '<path class="skin" d="M82,220 C78,250 76,280 74,318 L70,398 L88,402 L92,320 C94,282 96,252 96,226 Z"/>' +
+    '<path class="skin" d="M118,220 C122,250 124,280 126,318 L130,398 L112,402 L108,320 C106,282 104,252 104,226 Z"/>';
+
+  function mirrorOf(id, d) {
+    return '<g data-m="' + id + '"><path d="' + d + '"/></g>' +
+           '<g data-m="' + id + '" transform="translate(200,0) scale(-1,1)"><path d="' + d + '"/></g>';
+  }
+
+  function viewSVG(view) {
+    var out = '';
+    Object.keys(MUS).forEach(function (id) {
+      var m = MUS[id];
+      if (m.view !== view) return;
+      out += m.center ? '<g data-m="' + id + '"><path d="' + m.d + '"/></g>' : mirrorOf(id, m.d);
+    });
+    return '<svg class="mu-svg" viewBox="0 0 200 430" aria-label="' + (view === 'front' ? '正面' : '背面') + '肌肉示意图">' +
+      '<g class="body">' + BODY + '</g>' +
+      '<g class="front" data-view="front"' + (view === 'back' ? ' hidden' : '') + '>' + (view === 'front' ? out : buildFor('front')) + '</g>' +
+      '<g class="back" data-view="back"' + (view === 'front' ? ' hidden' : '') + '>' + (view === 'back' ? out : buildFor('back')) + '</g>' +
+      '</svg>';
+  }
+
+  function buildFor(view) {
+    var out = '';
+    Object.keys(MUS).forEach(function (id) {
+      var m = MUS[id];
+      if (m.view !== view) return;
+      out += m.center ? '<g data-m="' + id + '"><path d="' + m.d + '"/></g>' : mirrorOf(id, m.d);
+    });
+    return out;
+  }
+
+  function exName(move) {
+    var n = move.querySelector('.name');
+    if (!n) return '';
+    var t = '';
+    for (var i = 0; i < n.childNodes.length; i++) {
+      if (n.childNodes[i].nodeType === 3) { t += n.childNodes[i].nodeValue; break; }
+    }
+    return t.replace(/\s+/g, ' ').trim();
+  }
+
+  function muscleList(ids) {
+    return ids.map(function (id) { return MUS[id] ? MUS[id].name : id; }).join('、');
+  }
+
+  function paintMap(panel, data) {
+    Array.prototype.forEach.call(panel.querySelectorAll('g[data-m]'), function (g) {
+      var id = g.getAttribute('data-m');
+      g.classList.remove('pri', 'sec', 'sel');
+      if (data.p.indexOf(id) > -1) g.classList.add('pri');
+      else if (data.s.indexOf(id) > -1) g.classList.add('sec');
+    });
+  }
+
+  function defaultInfo(data) {
+    var p = muscleList(data.p), s = muscleList(data.s);
+    return '主要：<b>' + (p || '—') + '</b><br>次要：' + (s || '—');
+  }
+
+  function buildPanel(panel, move) {
+    var name = exName(move);
+    var data = MAP[name] || null;
+    panel.innerHTML =
+      '<div class="mu-head"><span class="mu-name">' + (name || '动作') + '</span>' +
+      '<div class="mu-tabs"><button type="button" data-v="front" class="on">正面</button>' +
+      '<button type="button" data-v="back">背面</button></div></div>' +
+      '<div class="mu-stage"></div>' +
+      '<div class="mu-legend"><span><i class="lg-pri"></i>主要</span><span><i class="lg-sec"></i>次要</span><span><i class="lg-off"></i>不涉及</span></div>' +
+      '<div class="mu-info"></div>';
+    var stage = panel.querySelector('.mu-stage');
+    stage.innerHTML = viewSVG('front');
+    var info = panel.querySelector('.mu-info');
+
+    if (!data) {
+      info.innerHTML = '<span class="mu-empty">这个动作还没录入肌群对应，点上方任意肌肉可查看肌肉说明。</span>';
+    } else {
+      paintMap(panel, data);
+      info.innerHTML = defaultInfo(data);
+    }
+
+    panel.addEventListener('click', function (e) {
+      var tab = e.target.closest('.mu-tabs button');
+      if (tab) {
+        var v = tab.getAttribute('data-v');
+        Array.prototype.forEach.call(panel.querySelectorAll('.mu-tabs button'), function (b) {
+          b.classList.toggle('on', b === tab);
+        });
+        var f = panel.querySelector('g[data-view="front"]');
+        var bk = panel.querySelector('g[data-view="back"]');
+        if (f) { if (v === 'front') f.removeAttribute('hidden'); else f.setAttribute('hidden', ''); }
+        if (bk) { if (v === 'back') bk.removeAttribute('hidden'); else bk.setAttribute('hidden', ''); }
+        return;
+      }
+      var g = e.target.closest('g[data-m]');
+      if (!g || !data) return;
+      var id = g.getAttribute('data-m');
+      Array.prototype.forEach.call(panel.querySelectorAll('g[data-m="' + id + '"]'), function (x) {
+        x.classList.add('sel');
+      });
+      Array.prototype.forEach.call(panel.querySelectorAll('g[data-m]:not([data-m="' + id + '"])'), function (x) {
+        x.classList.remove('sel');
+      });
+      var m = MUS[id];
+      var role = data.p.indexOf(id) > -1 ? '主要发力' : (data.s.indexOf(id) > -1 ? '次要参与' : '基本不涉及');
+      info.innerHTML = '<b>' + m.name + '</b> · ' + role + '<br>' + m.desc;
+    });
+  }
+
+  function initMuscle() {
+    Array.prototype.forEach.call(document.querySelectorAll('.move'), function (mv) {
+      if (mv.nextElementSibling && mv.nextElementSibling.classList.contains('mu-wrap')) return;
+      var wrap = document.createElement('div');
+      wrap.className = 'mu-wrap';
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'mu-toggle';
+      btn.textContent = '发力肌群';
+      var panel = document.createElement('div');
+      panel.className = 'mu-panel';
+      panel.hidden = true;
+      btn.addEventListener('click', function () {
+        if (panel.hidden) {
+          if (!panel.innerHTML) buildPanel(panel, mv);
+          panel.hidden = false;
+          btn.classList.add('open');
+          btn.textContent = '收起肌肉图';
+        } else {
+          panel.hidden = true;
+          btn.classList.remove('open');
+          btn.textContent = '发力肌群';
+        }
+      });
+      wrap.appendChild(btn);
+      wrap.appendChild(panel);
+      mv.parentNode.insertBefore(wrap, mv.nextSibling);
+    });
+  }
+
+  initMuscle();
+  var mTimer = null;
+  var mo = new MutationObserver(function () {
+    clearTimeout(mTimer);
+    mTimer = setTimeout(initMuscle, 60);
+  });
+  var planDaysEl = document.querySelector('.plan-days');
+  if (planDaysEl) mo.observe(planDaysEl, { childList: true });
 
   document.getElementById('resetText').addEventListener('click', function () {
     save(TEXT_KEY, {});

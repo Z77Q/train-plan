@@ -263,7 +263,11 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 .dock-stats b{font-size:.98rem;font-weight:600;color:var(--ink);margin:0 .15rem;}
 .dock-stats b.ok{color:#2f7d4f;}
 .dock-stats b.over{color:#a15d22;}
-.dock .chev{font-size:.8rem;color:#999;}
+.dock .chev{
+  width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;
+  border-top:6px solid #9a9a9a;transition:transform .2s ease;
+}
+.dock.open .chev{transform:rotate(180deg);}
 .dock-body{display:none;border-top:1px solid var(--line);padding:.65rem .85rem .8rem;}
 .dock.open .dock-body{display:block;}
 .dock-row{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;font-size:.74rem;color:var(--muted);}
@@ -818,7 +822,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 <div class="dock" id="dock">
   <button class="dock-head" id="dockToggle" aria-expanded="false">
     <div class="dock-stats">蛋白 <b id="pV">0.0</b> g　·　热量 <b id="kV">0</b> kcal</div>
-    <span class="chev" id="chev">▾</span>
+    <span class="chev" id="chev"></span>
   </button>
   <div class="dock-body">
     <div class="dock-row">
@@ -1733,12 +1737,10 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
   var dock = document.getElementById('dock');
   var dockToggle = document.getElementById('dockToggle');
-  var chev = document.getElementById('chev');
 
   function syncDock() {
     var open = dock.classList.contains('open');
     document.body.classList.toggle('dock-collapsed', !open);
-    chev.textContent = open ? '▴' : '▾';
     dockToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
   }
 

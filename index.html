@@ -315,6 +315,17 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
 .dock-btn:active{background:var(--soft);}
 .dock-btn.dark{background:var(--fill);color:#fff;border-color:var(--fill);}
 [data-ek].editing{outline:1px dashed #c4c4c0;outline-offset:3px;border-radius:2px;cursor:text;}
+[data-ek].editing:empty{display:inline-block;min-width:2.4em;min-height:1.5em;}
+[data-ek].editing:empty::before{content:"点此输入";color:#c2c2c0;font-weight:400;}
+.del-x{
+  position:absolute;top:-8px;right:-6px;z-index:9;display:none;
+  width:24px;height:24px;border-radius:50%;border:1px solid #ddd;background:#fff;
+  color:#999;font-size:14px;line-height:1;font-family:inherit;cursor:pointer;
+  align-items:center;justify-content:center;box-shadow:0 1px 3px rgba(0,0,0,.08);
+  -webkit-tap-highlight-color:transparent;
+}
+body.editing-on .del-x{display:flex;}
+body.editing-on [data-delcard]{position:relative;}
 
 /* 全屏舞台 */
 .stage{
@@ -496,6 +507,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
       <div class="plan-tools">
         <button id="planEditBtn">改计划</button>
         <span class="plan-hint" id="planHint"></span>
+      </div>
+      <div class="plan-tools">
+        <button id="restoreCards" style="display:none">恢复删掉的卡片</button>
       </div>
 
       <div class="kv">
@@ -682,19 +696,23 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
       <section id="diet">
         <h2>饮食</h2>
 
-        <div class="meal">
+        <div class="plan-tools">
+          <button id="restoreCards2" style="display:none">恢复删掉的卡片</button>
+        </div>
+
+        <div class="meal" data-delcard="m0">
           <div class="meal-head"><span class="meal-name">早餐</span><span class="meal-time">7:30–8:30</span></div>
           <div class="meal-body" data-meal-body="0"></div>
         </div>
-        <div class="meal">
+        <div class="meal" data-delcard="m1">
           <div class="meal-head"><span class="meal-name">午餐</span><span class="meal-time">12:00–13:00</span></div>
           <div class="meal-body" data-meal-body="1"></div>
         </div>
-        <div class="meal">
+        <div class="meal" data-delcard="m2">
           <div class="meal-head"><span class="meal-name">晚餐</span><span class="meal-time">18:00–19:00</span></div>
           <div class="meal-body" data-meal-body="2"></div>
         </div>
-        <div class="meal">
+        <div class="meal" data-delcard="m3">
           <div class="meal-head"><span class="meal-name">训练前后 / 睡前</span><span class="meal-time">按需</span></div>
           <div class="meal-body" data-meal-body="3"></div>
         </div>
@@ -1279,7 +1297,7 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   }
 
   /* ================= 文字编辑 ================= */
-  var TEXT_KEY = 'plan_text_v3';
+  var TEXT_KEY = 'plan_text_v5';
   var editBtn = document.getElementById('editBtn');
   var editing = false;
   var editables = [];
@@ -1317,11 +1335,88 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   collectEditables();
   restoreText();
 
+  /* ---------- 卡片删除 ---------- */
+  var DEL_KEY = 'plan_delcards_v1';
+  var delCards = load(DEL_KEY, []);
+  var restoreBtns = ['restoreCards', 'restoreCards2'].map(function (id) {
+    return document.getElementById(id);
+  }).filter(Boolean);
+
+  function syncRestore() {
+    restoreBtns.forEach(function (b) { b.style.display = delCards.length ? '' : 'none'; });
+  }
+
+  function hideDeleted() {
+    delCards.forEach(function (id) {
+      var el = document.querySelector('[data-delcard="' + id + '"]');
+      if (el) el.style.display = 'none';
+    });
+  }
+
+  function makeDelBtns() {
+    Array.prototype.forEach.call(document.querySelectorAll('[data-delcard]'), function (el) {
+      if (el.querySelector('.del-x')) return;
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'del-x';
+      b.textContent = '×';
+      b.setAttribute('aria-label', '删除这张卡片');
+      b.addEventListener('click', function (ev) {
+        ev.preventDefault();
+        ev.stopPropagation();
+        el.style.display = 'none';
+        var id = el.getAttribute('data-delcard');
+        if (delCards.indexOf(id) < 0) {
+          delCards.push(id);
+          save(DEL_KEY, delCards);
+        }
+        syncRestore();
+      });
+      el.appendChild(b);
+    });
+  }
+
+  hideDeleted();
+  makeDelBtns();
+  syncRestore();
+
+  restoreBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      delCards = [];
+      save(DEL_KEY, delCards);
+      Array.prototype.forEach.call(document.querySelectorAll('[data-delcard]'), function (el) {
+        el.style.display = '';
+      });
+      syncRestore();
+    });
+  });
+
+  /* 空的可编辑块：点一下就插入光标，能立即打字 */
+  document.addEventListener('pointerdown', function (e) {
+    if (!editing) return;
+    var el = e.target && e.target.closest ? e.target.closest('[data-ek].editing') : null;
+    if (!el) return;
+    if (el.textContent.trim()) return;
+    e.preventDefault();
+    if (!el.firstChild) el.appendChild(document.createElement('br'));
+    el.focus();
+    try {
+      var range = document.createRange();
+      range.setStart(el, 0);
+      range.collapse(true);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+    } catch (err) {}
+  }, true);
+
   editBtn.addEventListener('click', function () {
     editing = !editing;
+    document.body.classList.toggle('editing-on', editing);
     editables.forEach(function (el) {
       el.contentEditable = editing ? 'true' : 'false';
       el.classList.toggle('editing', editing);
+      if (!editing && !el.textContent.trim()) el.innerHTML = '';
     });
     editBtn.textContent = editing ? '完成' : '编辑文字';
     editBtn.classList.toggle('dark', editing);

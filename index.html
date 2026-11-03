@@ -249,6 +249,10 @@ blockquote cite{display:block;font-size:.75rem;color:var(--muted);font-style:nor
   -webkit-tap-highlight-color:transparent;
 }
 .f-tools .fimport:active{background:#1a1613;}
+.f-tools label.fimport{position:relative;overflow:hidden;}
+.f-tools label.fimport input[type=file]{
+  position:absolute;inset:0;width:100%;height:100%;opacity:0;font-size:0;cursor:pointer;
+}
 
 .f-fav{border-top:1px solid #261f1b;margin-top:.75rem;padding-top:.65rem;}
 .f-fav-head{display:flex;align-items:center;justify-content:space-between;gap:.5rem;}
@@ -668,78 +672,6 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
       </div>
     </section>
 
-  </div>
-
-  <!-- ================= 第 2 / 3 页：原理饮食 · 音乐 ================= -->
-
-    <!-- 左页：理论与饮食 -->
-    <div class="sheet page left">
-
-      <section id="diet">
-        <h2>饮食</h2>
-
-        <p class="diet-tip">每餐先点“添加食物”，填好名称、单位、每单位蛋白和热量，再用 − / + 调整份数，数据会实时重算。</p>
-
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">早餐</span><span class="meal-time">7:30–8:30</span></div>
-          <div class="meal-body" data-meal-body="0"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">午餐</span><span class="meal-time">12:00–13:00</span></div>
-          <div class="meal-body" data-meal-body="1"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">晚餐</span><span class="meal-time">18:00–19:00</span></div>
-          <div class="meal-body" data-meal-body="2"></div>
-        </div>
-        <div class="meal">
-          <div class="meal-head"><span class="meal-name">训练前后 / 睡前</span><span class="meal-time">按需</span></div>
-          <div class="meal-body" data-meal-body="3"></div>
-        </div>
-
-        <div class="kv">
-          <div class="item"><div class="k">每日蛋白目标</div><div class="v">110–140 g</div></div>
-          <div class="item"><div class="k">每日热量目标</div><div class="v">2200–2400 kcal</div></div>
-        </div>
-
-        <h3>基本理论</h3>
-        <div class="card">
-          <ul class="plain">
-            <li>蛋白总量：每公斤体重 1.6–2.2g。训练初期 1.8g 左右就够，超过 2.5g 没有额外增肌收益，只是多占热量。</li>
-            <li>蛋白分配：每餐 0.4g/kg 左右，一天 3–5 餐，比一顿猛吃更容易利用。</li>
-            <li>热量：比维持热量高 5–15% 的小幅盈余最适合增肌。盈余过大，脂肪增长比例会明显上升。</li>
-            <li>碳水：每公斤 3–5g，优先放在训练前 1–2 小时和训练后，其余餐次可以少一点。</li>
-            <li>脂肪：每公斤 0.8–1g，不建议低于 0.6g，优先鱼、坚果、橄榄油这类不饱和脂肪。</li>
-            <li>蛋白质量：蛋、奶、肉、鱼氨基酸谱完整；豆制品可以和谷物互补；酵母蛋白同样属于完整蛋白，乳糖不耐可以用它替代乳清。</li>
-            <li>训练后：0–2 小时内补 20–40g 蛋白加一份碳水即可，不必卡死 30 分钟。</li>
-            <li>水与纤维：每天 30–40ml/kg，训练日再加；蔬菜和全谷物保证 25–30g 膳食纤维。</li>
-            <li>优先级：总热量和蛋白总量最重要，其次是分配时机，补剂只用来补缺口。</li>
-          </ul>
-        </div>
-
-        <h3>蛋白质来源</h3>
-        <div class="card">
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡胸肉</div><div class="meta">31g 蛋白 / 100g　水煮、煎、空气炸锅</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡蛋</div><div class="meta">6g 蛋白 / 个　煮、煎、蒸，每餐都能加</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">纯牛奶</div><div class="meta">3.3g 蛋白 / 100ml　一天至少 500ml</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">瘦牛肉</div><div class="meta">26g 蛋白 / 100g　每周 2–3 次，补铁补锌</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鱼肉</div><div class="meta">18g 蛋白 / 100g　蒸或煎，脂肪质量好</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">虾</div><div class="meta">20g 蛋白 / 100g　水煮或清炒</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">豆腐</div><div class="meta">8g 蛋白 / 100g　便宜，植物蛋白补充</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">乳清蛋白粉</div><div class="meta">25g 蛋白 / 勺　训练后或早餐补缺口</div></div></div>
-          <div class="move"><div class="idx">·</div><div class="body"><div class="name">酵母蛋白粉</div><div class="meta">24g 蛋白 / 勺　乳糖不耐时替代乳清</div></div></div>
-        </div>
-
-        <h3>补剂</h3>
-        <div class="card">
-          <div class="move"><div class="idx">1</div><div class="body"><div class="name">乳清蛋白粉 / 酵母蛋白粉</div><div class="meta">最快补上蛋白缺口　<b>每天 1–2 勺</b>，优先放在蛋白没吃够的那一餐</div></div></div>
-          <div class="move"><div class="idx">2</div><div class="body"><div class="name">肌酸一水合物</div><div class="meta">让力量和围度进步更稳　<b>每天 3–5g</b>，长期吃</div></div></div>
-          <div class="move"><div class="idx">3</div><div class="body"><div class="name">复合维生素</div><div class="meta">饮食不均衡时兜底　<b>每天 1 片</b></div></div></div>
-          <div class="move"><div class="idx">4</div><div class="body"><div class="name">维生素 D</div><div class="meta">晒太阳少时补充　<b>1000–2000 IU / 天</b></div></div></div>
-          <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">增肌粉不推荐，本质是蛋白粉加糖，直接吃蛋白粉更精准。</p>
-        </div>
-      </section>
-
       <section id="principles">
         <h2>核心原则</h2>
 
@@ -784,6 +716,35 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
           <p>三分化不等于练三天歇一天。状态好可以练三休一，累了就练二休一，甚至练一天休一天。练四休一不推荐。</p>
           <blockquote>计划之所以叫计划，是它要符合你自己。不靠毅力硬跟，靠的是循证。</blockquote>
         </div>
+        <h3>基本理论</h3>
+        <div class="card">
+          <ul class="plain">
+            <li>蛋白总量：每公斤体重 1.6–2.2g。训练初期 1.8g 左右就够，超过 2.5g 没有额外增肌收益，只是多占热量。</li>
+            <li>蛋白分配：每餐 0.4g/kg 左右，一天 3–5 餐，比一顿猛吃更容易利用。</li>
+            <li>热量：比维持热量高 5–15% 的小幅盈余最适合增肌。盈余过大，脂肪增长比例会明显上升。</li>
+            <li>碳水：每公斤 3–5g，优先放在训练前 1–2 小时和训练后，其余餐次可以少一点。</li>
+            <li>脂肪：每公斤 0.8–1g，不建议低于 0.6g，优先鱼、坚果、橄榄油这类不饱和脂肪。</li>
+            <li>蛋白质量：蛋、奶、肉、鱼氨基酸谱完整；豆制品可以和谷物互补；酵母蛋白同样属于完整蛋白，乳糖不耐可以用它替代乳清。</li>
+            <li>训练后：0–2 小时内补 20–40g 蛋白加一份碳水即可，不必卡死 30 分钟。</li>
+            <li>水与纤维：每天 30–40ml/kg，训练日再加；蔬菜和全谷物保证 25–30g 膳食纤维。</li>
+            <li>优先级：总热量和蛋白总量最重要，其次是分配时机，补剂只用来补缺口。</li>
+          </ul>
+        </div>
+
+        <h3>蛋白质来源</h3>
+        <div class="card">
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡胸肉</div><div class="meta">31g 蛋白 / 100g　水煮、煎、空气炸锅</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鸡蛋</div><div class="meta">6g 蛋白 / 个　煮、煎、蒸，每餐都能加</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">纯牛奶</div><div class="meta">3.3g 蛋白 / 100ml　一天至少 500ml</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">瘦牛肉</div><div class="meta">26g 蛋白 / 100g　每周 2–3 次，补铁补锌</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">鱼肉</div><div class="meta">18g 蛋白 / 100g　蒸或煎，脂肪质量好</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">虾</div><div class="meta">20g 蛋白 / 100g　水煮或清炒</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">豆腐</div><div class="meta">8g 蛋白 / 100g　便宜，植物蛋白补充</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">乳清蛋白粉</div><div class="meta">25g 蛋白 / 勺　训练后或早餐补缺口</div></div></div>
+          <div class="move"><div class="idx">·</div><div class="body"><div class="name">酵母蛋白粉</div><div class="meta">24g 蛋白 / 勺　乳糖不耐时替代乳清</div></div></div>
+        </div>
+
+
       </section>
 
 
@@ -820,7 +781,53 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
           <p><strong>4–6 个月：</strong>力量、体态和形体同步改善，整体看起来更紧实。</p>
           <blockquote>这套计划的重点是练得有劲、身体功能好用，同时形体也能变好，不需要靠硬撑。</blockquote>
         </div>
+        <h3>补剂</h3>
+        <div class="card">
+          <div class="move"><div class="idx">1</div><div class="body"><div class="name">乳清蛋白粉 / 酵母蛋白粉</div><div class="meta">最快补上蛋白缺口　<b>每天 1–2 勺</b>，优先放在蛋白没吃够的那一餐</div></div></div>
+          <div class="move"><div class="idx">2</div><div class="body"><div class="name">肌酸一水合物</div><div class="meta">让力量和围度进步更稳　<b>每天 3–5g</b>，长期吃</div></div></div>
+          <div class="move"><div class="idx">3</div><div class="body"><div class="name">复合维生素</div><div class="meta">饮食不均衡时兜底　<b>每天 1 片</b></div></div></div>
+          <div class="move"><div class="idx">4</div><div class="body"><div class="name">维生素 D</div><div class="meta">晒太阳少时补充　<b>1000–2000 IU / 天</b></div></div></div>
+          <p style="font-size:.78rem;color:var(--muted);margin-top:.5rem;">增肌粉不推荐，本质是蛋白粉加糖，直接吃蛋白粉更精准。</p>
+        </div>
+
       </section>
+
+  </div>
+
+  <!-- ================= 第 2 / 3 页：原理饮食 · 音乐 ================= -->
+
+    <!-- 左页：理论与饮食 -->
+    <div class="sheet page left">
+
+      <section id="diet">
+        <h2>饮食</h2>
+
+        <p class="diet-tip">每餐先点“添加食物”，填好名称、单位、每单位蛋白和热量，再用 − / + 调整份数，数据会实时重算。</p>
+
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">早餐</span><span class="meal-time">7:30–8:30</span></div>
+          <div class="meal-body" data-meal-body="0"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">午餐</span><span class="meal-time">12:00–13:00</span></div>
+          <div class="meal-body" data-meal-body="1"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">晚餐</span><span class="meal-time">18:00–19:00</span></div>
+          <div class="meal-body" data-meal-body="2"></div>
+        </div>
+        <div class="meal">
+          <div class="meal-head"><span class="meal-name">训练前后 / 睡前</span><span class="meal-time">按需</span></div>
+          <div class="meal-body" data-meal-body="3"></div>
+        </div>
+
+        <div class="kv">
+          <div class="item"><div class="k">每日蛋白目标</div><div class="v">110–140 g</div></div>
+          <div class="item"><div class="k">每日热量目标</div><div class="v">2200–2400 kcal</div></div>
+        </div>
+
+      </section>
+
 
     </div>
 
@@ -853,8 +860,9 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
 
         <div class="f-tools">
           <button class="fimport" id="fReload">重新载入歌单</button>
-          <button class="fimport" id="fPick">手机添加</button>
-          <input type="file" id="fFile" accept="audio/*,.mp3,.m4a,.flac,.wav,.ogg,.aac" multiple hidden>
+          <label class="fimport" id="fPick">手机添加
+            <input type="file" id="fFile" accept="audio/*,.mp3,.m4a,.wav,.flac,.ogg,.aac" multiple>
+          </label>
         </div>
 
         <div class="f-fav">
@@ -1089,6 +1097,34 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   var DIET_KEY = 'plan_diet_v2';
   var diet = load(DIET_KEY, { custom: {} });
   if (!diet.custom) diet.custom = {};
+  if (!diet.seeded) {
+    var hasFood = Object.keys(diet.custom).some(function (k) { return diet.custom[k].length; });
+    if (!hasFood) {
+      diet.custom = {
+        0: [
+          { id: 'd1', name: '鸡蛋', unit: '个', p: 6, k: 70, qty: 2 },
+          { id: 'd2', name: '纯牛奶', unit: '杯', p: 8, k: 150, qty: 1 },
+          { id: 'd3', name: '全麦面包', unit: '片', p: 3, k: 90, qty: 2 }
+        ],
+        1: [
+          { id: 'd4', name: '鸡胸肉', unit: '100g', p: 31, k: 165, qty: 1 },
+          { id: 'd5', name: '米饭', unit: '100g', p: 2.6, k: 116, qty: 2 },
+          { id: 'd6', name: '西兰花', unit: '100g', p: 4.1, k: 34, qty: 1.5 }
+        ],
+        2: [
+          { id: 'd7', name: '瘦牛肉', unit: '100g', p: 26, k: 250, qty: 1 },
+          { id: 'd8', name: '红薯', unit: '100g', p: 1.6, k: 86, qty: 2 },
+          { id: 'd9', name: '鸡蛋', unit: '个', p: 6, k: 70, qty: 1 }
+        ],
+        3: [
+          { id: 'd10', name: '乳清蛋白粉', unit: '勺', p: 25, k: 120, qty: 1 },
+          { id: 'd11', name: '香蕉', unit: '根', p: 1.3, k: 90, qty: 1 }
+        ]
+      };
+    }
+    diet.seeded = true;
+    save(DIET_KEY, diet);
+  }
 
   var bodies = document.querySelectorAll('.meal-body');
   var pV = document.getElementById('pV');
@@ -1589,7 +1625,6 @@ footer{border-top:1px solid var(--line);margin-top:2.4rem;padding:1.4rem 0 0;fon
   }).catch(function () {});
 
   var fFile = document.getElementById('fFile');
-  document.getElementById('fPick').addEventListener('click', function () { fFile.click(); });
 
   fFile.addEventListener('change', function () {
     var files = Array.prototype.slice.call(fFile.files || []);
